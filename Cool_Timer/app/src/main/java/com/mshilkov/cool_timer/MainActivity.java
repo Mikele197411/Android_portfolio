@@ -1,10 +1,15 @@
 package com.mshilkov.cool_timer;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -114,5 +119,30 @@ public class MainActivity extends AppCompatActivity {
         textView.setText("00:60");
         seekBar.setProgress(60);
         isTimerOn=false;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id=item.getItemId();
+        if(id==R.id.action_settings)
+        {
+            Intent openSettings=new Intent(this, SettingsActivity.class);
+            startActivity(openSettings);
+            return  true;
+        }
+        else if(id==R.id.action_about)
+        {
+            Intent openAbout=new Intent(this, AboutActivity.class);
+            startActivity(openAbout);
+            return  true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater=getMenuInflater();
+        menuInflater.inflate(R.menu.timer_menu, menu);
+        return true;
     }
 }
