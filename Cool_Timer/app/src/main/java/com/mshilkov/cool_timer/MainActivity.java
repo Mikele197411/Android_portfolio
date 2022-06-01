@@ -2,8 +2,10 @@ package com.mshilkov.cool_timer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -67,9 +69,18 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFinish() {
-                    MediaPlayer mediaPlayer=MediaPlayer.create(getApplicationContext(),R.raw.bell_sound);
-                    mediaPlayer.start();
-                    resestTimer();
+                    SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    if(sharedPreferences.getBoolean("enable_sound", true))
+                    {
+                        MediaPlayer mediaPlayer=MediaPlayer.create(getApplicationContext(),R.raw.bell_sound);
+                        mediaPlayer.start();
+                        resestTimer();
+                    }
+                    else
+                    {
+                        resestTimer();
+                    }
+
                 }
             };
             countDownTimer.start();
