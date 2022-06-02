@@ -11,6 +11,10 @@
         android:title="Time Melody"
         android:key="timer_melody"
         android:defaultValue="bell"
-        android:entries=""
-        android:entryValues=""/>
+        android:entries="@array/pref_timer_melody_labels"
+        android:entryValues="@array/pref_timer_melody_values"/>
+    <EditTextPreference
+        android:title="Default interval"
+        android:key="default_interval"
+        android:defaultValue="30"/>
 </PreferenceScreen>
