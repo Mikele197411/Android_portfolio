@@ -69,16 +69,16 @@ public class AddMemberActivity extends AppCompatActivity {
                 {
                     if (selectedGender.equals("Male"))
                     {
-                        gender= CLubOlympContract.memberEntry.GENDER_MALE;
+                        gender= CLubOlympContract.MemberEntry.GENDER_MALE;
                     }
                     else if (selectedGender.equals("Female"))
                     {
-                        gender=CLubOlympContract.memberEntry.GENDER_FEMALE;
+                        gender=CLubOlympContract.MemberEntry.GENDER_FEMALE;
                     }
 
                     else
                     {
-                        gender=gender=CLubOlympContract.memberEntry.GENDER_UNKNOW;
+                        gender=gender=CLubOlympContract.MemberEntry.GENDER_UNKNOWN;
                     }
 
                 }
