@@ -13,6 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ClubOlimp"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/member_item" />
+
         <activity
             android:name=".AddMemberActivity"
             android:exported="false" />
@@ -25,10 +29,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
-            android:authorities="package com.mshilkov.clubolimp"
             android:name=".data.OlimpContentProvider"
-            android:exported="false"/>
+            android:authorities="package com.mshilkov.clubolimp"
+            android:exported="false" />
     </application>
 
 </manifest>
