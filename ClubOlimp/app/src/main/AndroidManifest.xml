@@ -32,7 +32,7 @@
 
         <provider
             android:name=".data.OlimpContentProvider"
-            android:authorities="package com.mshilkov.clubolimp"
+            android:authorities="com.mshilkov.clubolimp"
             android:exported="false" />
     </application>
 
