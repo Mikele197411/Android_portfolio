@@ -1,4 +1,4 @@
 # Cool Timer APP
 Working with timer and settings
-# Cool Timer APP
+# Club Olimp
 Working with SQLite and CursorLoader
