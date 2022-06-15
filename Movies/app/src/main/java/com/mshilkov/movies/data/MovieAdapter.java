@@ -21,6 +21,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     private ArrayList<Movie> movies;
     private OnItemClickListener listener;
 
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
     public MovieAdapter(Context context, ArrayList<Movie> movies) {
         this.context = context;
         this.movies = movies;
@@ -28,16 +36,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @NonNull
     @Override
-    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+
         View view = LayoutInflater.from(context).inflate(R.layout.movie_item,
-                parent, false);
+                viewGroup, false);
 
         return new MovieViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieViewHolder movieViewHolder, int position) {
-        Movie currentMovie = movies.get(position);
+    public void onBindViewHolder(@NonNull MovieViewHolder movieViewHolder, int i) {
+        Movie currentMovie = movies.get(i);
 
         String title = currentMovie.getTitle();
         String year = currentMovie.getYear();
@@ -54,22 +63,31 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return movies.size();
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-    }
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
+    public class MovieViewHolder extends RecyclerView.ViewHolder {
 
-    public class MovieViewHolder extends RecyclerView.ViewHolder{
         ImageView posterImageView;
         TextView titleTextView;
         TextView yearTextView;
+
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
+
             posterImageView = itemView.findViewById(R.id.posterImageView);
             titleTextView = itemView.findViewById(R.id.titleTextView);
             yearTextView = itemView.findViewById(R.id.yearTextView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
+
 }
