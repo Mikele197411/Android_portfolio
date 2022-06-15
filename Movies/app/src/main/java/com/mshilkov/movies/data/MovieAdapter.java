@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,7 +19,7 @@ import java.util.ArrayList;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private Context context;
     private ArrayList<Movie> movies;
-    private AdapterView.OnItemClickListener listener;
+    private OnItemClickListener listener;
 
     public MovieAdapter(Context context, ArrayList<Movie> movies) {
         this.context = context;
@@ -55,6 +54,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return movies.size();
     }
 
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
     public class MovieViewHolder extends RecyclerView.ViewHolder{
         ImageView posterImageView;
