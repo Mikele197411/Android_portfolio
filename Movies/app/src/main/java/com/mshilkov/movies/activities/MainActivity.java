@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -36,7 +39,8 @@ public class MainActivity extends AppCompatActivity  implements MovieAdapter.OnI
     private MovieAdapter movieAdapter;
     private ArrayList<Movie> movies;
     private RequestQueue requestQueue;
-
+    EditText searchEditText;
+    Button btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,14 +48,15 @@ public class MainActivity extends AppCompatActivity  implements MovieAdapter.OnI
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.hasFixedSize();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        searchEditText=findViewById(R.id.editText);
+        btn=findViewById(R.id.button);
         movies = new ArrayList<>();
         requestQueue = Volley.newRequestQueue(this);
-        getMovies();
+
     }
 
-    private void getMovies() {
-        String url = "http://www.omdbapi.com/?apikey=10d96193&s=superman";
+    private void getMovies(String name) {
+        String url = "http://www.omdbapi.com/?apikey=10d96193&s="+name;
        // String url = "http://www.omdbapi.com/?apikey=3b8a83ef&s=superman";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
@@ -110,5 +115,10 @@ public class MainActivity extends AppCompatActivity  implements MovieAdapter.OnI
 
 
         startActivity(intent);
+    }
+
+    public void onClick(View view) {
+        searchEditText.setText(searchEditText.getText());
+        getMovies(searchEditText.getText().toString());
     }
 }
