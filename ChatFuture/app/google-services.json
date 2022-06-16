@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "291415134902",
+    "project_id": "chat-future-d344c",
+    "storage_bucket": "chat-future-d344c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:291415134902:android:a068a7f81441d93b880c17",
+        "android_client_info": {
+          "package_name": "com.mshilkov.chatfuture"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "291415134902-l4orfct8r79bi20ud9g36r54p20m1qao.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mshilkov.chatfuture",
+            "certificate_hash": "5a0f1157dafc322018228f7330c83704434c91ca"
+          }
+        },
+        {
+          "client_id": "291415134902-265spfo81mtvio4b2g8964qihbjkram0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBN3sXbgcj7fTrEmnviax1MtpUjmDB4n1c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "291415134902-265spfo81mtvio4b2g8964qihbjkram0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
