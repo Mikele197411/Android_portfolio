@@ -15,6 +15,7 @@
     android:transcriptMode="alwaysScroll"
     tools:listitem="@layout/message_item"
     android:layout_above="@id/sendMessage"
+    android:id="@+id/messagesListView"
     />
     <LinearLayout
         android:id="@+id/sendMessage"
@@ -22,7 +23,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true">
-        <ImageView
+        <ImageButton
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:id="@+id/sendPhotoButton"
@@ -35,6 +36,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:id="@+id/sendMessageButton"
             android:text="Send"/>
 
@@ -43,6 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+        android:id="@+id/progressBar"/>
 
 </RelativeLayout>
