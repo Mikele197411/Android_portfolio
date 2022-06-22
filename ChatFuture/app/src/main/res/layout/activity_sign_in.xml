@@ -29,6 +29,13 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/repeatPasswordEditText"
+        android:hint="Confirm password"
+        android:layout_marginTop="8dp"
+        android:inputType="textPassword"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/nameEditText"
         android:hint="You name"
         android:layout_marginTop="8dp"
@@ -44,6 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tap to Login"
+        android:onClick="toggleLogin"
         android:layout_marginTop="8dp"
         android:layout_gravity="center_horizontal"
         android:textSize="16sp"
