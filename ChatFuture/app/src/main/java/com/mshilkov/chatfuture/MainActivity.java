@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference databaseReference ;
     ChildEventListener messsagesChildEventListener;
+    DatabaseReference usersDattabaseRef;
+    ChildEventListener usersChildEventListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +53,15 @@ public class MainActivity extends AppCompatActivity {
 
         database=FirebaseDatabase.getInstance();
         databaseReference= database.getReference().child("messages");
-        username="Default User";
+        usersDattabaseRef= database.getReference().child("users");
+        Intent intent =getIntent();
+        if(intent!=null)
+        {
+            username=intent.getStringExtra("UserName");
+        }
+        else {
+            username = "Default User";
+        }
         messages=findViewById(R.id.messagesListView);
         progressBar=findViewById(R.id.progressBar);
         sendImageButton=findViewById(R.id.sendPhotoButton);
@@ -107,7 +117,37 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        usersChildEventListener=new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                User user=snapshot.getValue(User.class);
+                if(user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                {
+                    username=user.getName();
+                }
+            }
 
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        usersDattabaseRef.addChildEventListener(usersChildEventListener);
         messsagesChildEventListener= new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {

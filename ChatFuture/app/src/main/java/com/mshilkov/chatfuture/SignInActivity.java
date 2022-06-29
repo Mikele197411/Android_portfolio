@@ -18,6 +18,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignInActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -29,10 +32,16 @@ public class SignInActivity extends AppCompatActivity {
     Button loginSignUpButton;
     private static  final String TAG="SignIN";
     private  boolean loginModeActive;
+    FirebaseDatabase database;
+    DatabaseReference databaseReference ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        database=FirebaseDatabase.getInstance();
+
+        databaseReference= database.getReference().child("users");
         mAuth = FirebaseAuth.getInstance();
         emailEditText=findViewById(R.id.emailEditText);
         passwordEditText=findViewById(R.id.passwordEditText);
@@ -74,8 +83,11 @@ public class SignInActivity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "createUserWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
+
+                                    Intent intent=new Intent(SignInActivity.this, MainActivity.class);
+                                    intent.putExtra("UserName", nameEditText.getText().toString().trim() );
                                     // updateUI(user);
-                                    startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                                    startActivity(intent);
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -98,6 +110,9 @@ public class SignInActivity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "createUserWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
+
+                                    Intent intent=new Intent(SignInActivity.this, MainActivity.class);
+                                    intent.putExtra("UserName", nameEditText.getText().toString().trim() );
                                     // updateUI(user);
                                     startActivity(new Intent(SignInActivity.this, MainActivity.class));
                                 } else {
@@ -127,6 +142,15 @@ public class SignInActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         }
+
+    }
+
+    private void createUser(FirebaseUser firebaseUser) {
+        User user=new User();
+        user.setId(firebaseUser.getUid());
+        user.setEmail(firebaseUser.getEmail());
+        user.setName(nameEditText.getText().toString().trim());
+        databaseReference.push().setValue(user);
 
     }
 
