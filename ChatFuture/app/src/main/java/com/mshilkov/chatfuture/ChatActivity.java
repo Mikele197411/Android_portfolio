@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,7 +36,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity {
 
     private ListView messages;
     private MessageAdapter adapter;
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_chat);
 
 
         database=FirebaseDatabase.getInstance();
@@ -206,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
         {
             case R.id.signOut:
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(MainActivity.this, SignInActivity.class));
+                startActivity(new Intent(ChatActivity.this, SignInActivity.class));
                 return  true;
             default:
                 return  super.onOptionsItemSelected(item);

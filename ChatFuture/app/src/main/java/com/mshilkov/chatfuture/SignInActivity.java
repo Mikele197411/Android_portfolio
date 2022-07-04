@@ -1,7 +1,5 @@
 package com.mshilkov.chatfuture;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -18,7 +16,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -57,7 +54,7 @@ public class SignInActivity extends AppCompatActivity {
         });
         if(mAuth.getCurrentUser()!=null)
         {
-            startActivity(new Intent(SignInActivity.this, MainActivity.class));
+            startActivity(new Intent(SignInActivity.this, ChatActivity.class));
         }
     }
 
@@ -84,7 +81,7 @@ public class SignInActivity extends AppCompatActivity {
                                     Log.d(TAG, "createUserWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
 
-                                    Intent intent=new Intent(SignInActivity.this, MainActivity.class);
+                                    Intent intent=new Intent(SignInActivity.this, ChatActivity.class);
                                     intent.putExtra("UserName", nameEditText.getText().toString().trim() );
                                     // updateUI(user);
                                     startActivity(intent);
@@ -111,10 +108,10 @@ public class SignInActivity extends AppCompatActivity {
                                     Log.d(TAG, "createUserWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
 
-                                    Intent intent=new Intent(SignInActivity.this, MainActivity.class);
+                                    Intent intent=new Intent(SignInActivity.this, ChatActivity.class);
                                     intent.putExtra("UserName", nameEditText.getText().toString().trim() );
                                     // updateUI(user);
-                                    startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                                    startActivity(new Intent(SignInActivity.this, ChatActivity.class));
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
