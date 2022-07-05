@@ -1,5 +1,6 @@
 package com.mshilkov.chatfuture;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -20,162 +21,154 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class SignInActivity extends AppCompatActivity {
-    private FirebaseAuth mAuth;
-    EditText emailEditText;
-    EditText passwordEditText;
-    EditText nameEditText;
-    TextView toggleLoginSingUpTextView;
-    EditText repeatPasswordEditiText;
-    Button loginSignUpButton;
-    private static  final String TAG="SignIN";
-    private  boolean loginModeActive;
-    FirebaseDatabase database;
-    DatabaseReference databaseReference ;
+    private static final String TAG = "SignInActivity";
+
+    private FirebaseAuth auth;
+
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private EditText repeatPasswordEditText;
+    private EditText nameEditText;
+    private TextView toggleLoginSignUpTextView;
+    private Button loginSignUpButton;
+
+    private boolean loginModeActive;
+
+    private FirebaseDatabase database;
+    private DatabaseReference usersDatabaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        database=FirebaseDatabase.getInstance();
 
-        databaseReference= database.getReference().child("users");
-        mAuth = FirebaseAuth.getInstance();
-        emailEditText=findViewById(R.id.emailEditText);
-        passwordEditText=findViewById(R.id.passwordEditText);
-        nameEditText=findViewById(R.id.nameEditText);
-        toggleLoginSingUpTextView=findViewById(R.id.toggleLoginSignUpTextView);
-        loginSignUpButton=findViewById(R.id.signUpButton);
-        repeatPasswordEditiText=findViewById(R.id.repeatPasswordEditText);
+        auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        usersDatabaseReference = database.getReference().child("users");
+
+        emailEditText = findViewById(R.id.emailEditText);
+        passwordEditText = findViewById(R.id.passwordEditText);
+        repeatPasswordEditText = findViewById(R.id.repeatPasswordEditText);
+        nameEditText = findViewById(R.id.nameEditText);
+        toggleLoginSignUpTextView = findViewById(R.id.toggleLoginSignUpTextView);
+        loginSignUpButton = findViewById(R.id.signUpButton);
+
         loginSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginSignUpUser(emailEditText.getText().toString().trim(), passwordEditText.getText().toString().trim());
+                loginSignUpUser(emailEditText.getText().toString().trim(),
+                        passwordEditText.getText().toString().trim());
             }
         });
-        if(mAuth.getCurrentUser()!=null)
-        {
-            startActivity(new Intent(SignInActivity.this, ChatActivity.class));
+
+        if (auth.getCurrentUser() != null) {
+            startActivity(new Intent(SignInActivity.this, UserListActivity.class));
         }
     }
 
     private void loginSignUpUser(String email, String password) {
-        if(loginModeActive)
-        {
-            if(emailEditText.getText().toString().trim().equals(""))
-            {
-                Toast.makeText(SignInActivity.this, "Email is not empty",
+        if (loginModeActive) {
+            if (passwordEditText.getText().toString().trim().length() < 7) {
+                Toast.makeText(this, "Password must be at least 7 characters",
                         Toast.LENGTH_SHORT).show();
-            }
-            else if(passwordEditText.getText().toString().trim().length()>7)
-            {
-                Toast.makeText(SignInActivity.this, "Passwords must be at least 7 characters",
+            } else if (emailEditText.getText().toString().trim().equals("")) {
+                Toast.makeText(this, "Please input your email",
                         Toast.LENGTH_SHORT).show();
-            }
-            else {
-                mAuth.signInWithEmailAndPassword(email, password)
+            } else {
+                auth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
-                            public void onComplete(Task<AuthResult> task) {
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    Log.d(TAG, "signInWithEmail:success");
+                                    FirebaseUser user = auth.getCurrentUser();
+                                    Intent intent = new Intent(SignInActivity.this,
+                                            UserListActivity.class);
+                                    intent.putExtra("userName", nameEditText.getText().toString().trim());
+                                    startActivity(intent);
+                                    //updateUI(user);
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                    Toast.makeText(SignInActivity.this, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
+                                    //updateUI(null);
+                                }
+
+                                // ...
+                            }
+                        });
+            }
+
+        } else {
+            if (!passwordEditText.getText().toString().trim().equals(
+                    repeatPasswordEditText.getText().toString().trim()
+            )) {
+                Toast.makeText(this, "Passwords don't match", Toast.LENGTH_SHORT).show();
+            } else if (passwordEditText.getText().toString().trim().length() < 7) {
+                Toast.makeText(this, "Password must be at least 7 characters",
+                        Toast.LENGTH_SHORT).show();
+            }else if (emailEditText.getText().toString().trim().equals("")) {
+                Toast.makeText(this, "Please input your email",
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                auth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "createUserWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
-
-                                    Intent intent=new Intent(SignInActivity.this, ChatActivity.class);
-                                    intent.putExtra("UserName", nameEditText.getText().toString().trim() );
-                                    // updateUI(user);
+                                    FirebaseUser user = auth.getCurrentUser();
+                                    createUser(user);
+                                    //updateUI(user);
+                                    Intent intent = new Intent(SignInActivity.this,
+                                            UserListActivity.class);
+                                    intent.putExtra("userName", nameEditText.getText().toString().trim());
                                     startActivity(intent);
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
                                     Toast.makeText(SignInActivity.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
-                                    // updateUI(null);
+                                    //updateUI(null);
                                 }
+
+                                // ...
                             }
                         });
             }
-        }
-        else
-        {
-            if(passwordEditText.getText().toString().trim().equals(repeatPasswordEditiText.getText().toString().trim())) {
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d(TAG, "createUserWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
 
-                                    Intent intent=new Intent(SignInActivity.this, ChatActivity.class);
-                                    intent.putExtra("UserName", nameEditText.getText().toString().trim() );
-                                    // updateUI(user);
-                                    startActivity(new Intent(SignInActivity.this, ChatActivity.class));
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(SignInActivity.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                    // updateUI(null);
-                                }
-                            }
-                        });
-            }
-            else if(emailEditText.getText().toString().trim().equals(""))
-            {
-                Toast.makeText(SignInActivity.this, "Email is not empty",
-                        Toast.LENGTH_SHORT).show();
-            }
-            else if(passwordEditText.getText().toString().trim().length()>7)
-            {
-                Toast.makeText(SignInActivity.this, "Passwords must be at least 7 characters",
-                        Toast.LENGTH_SHORT).show();
-            }
-
-            else
-            {
-                Toast.makeText(SignInActivity.this, "Passwords is not match",
-                        Toast.LENGTH_SHORT).show();
-            }
         }
+
 
     }
 
     private void createUser(FirebaseUser firebaseUser) {
-        User user=new User();
+        User user = new User();
         user.setId(firebaseUser.getUid());
         user.setEmail(firebaseUser.getEmail());
         user.setName(nameEditText.getText().toString().trim());
-        databaseReference.push().setValue(user);
+
+        usersDatabaseReference.push().setValue(user);
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            currentUser.reload();
-        }
-    }
+
 
     public void toggleLogin(View view) {
-        if(loginModeActive)
-        {
-            loginModeActive=false;
+        if (loginModeActive) {
+            loginModeActive = false;
             loginSignUpButton.setText("Sign Up");
-            toggleLoginSingUpTextView.setText("Or Log In");
-            repeatPasswordEditiText.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            loginModeActive=true;
-            loginSignUpButton.setText("Login");
-            toggleLoginSingUpTextView.setText("Or Sign Up");
-            repeatPasswordEditiText.setVisibility(View.GONE);
-        }
+            toggleLoginSignUpTextView.setText("Or, log in");
+            repeatPasswordEditText.setVisibility(View.VISIBLE);
 
+        } else {
+            loginModeActive = true;
+            loginSignUpButton.setText("Log In");
+            toggleLoginSignUpTextView.setText("Or, sign up");
+            repeatPasswordEditText.setVisibility(View.GONE);
+        }
     }
 }

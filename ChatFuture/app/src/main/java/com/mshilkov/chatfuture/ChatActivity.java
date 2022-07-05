@@ -46,22 +46,26 @@ public class ChatActivity extends AppCompatActivity {
     private EditText messageEditText;
     private  String  username;
     private static  final int RC_IMAGE_PICKER=124;
-    FirebaseDatabase database;
-    DatabaseReference databaseReference ;
-    ChildEventListener messsagesChildEventListener;
-    DatabaseReference usersDattabaseRef;
-    ChildEventListener usersChildEventListener;
-    FirebaseStorage fbStorage;
-    StorageReference chatImageStorageReference;
+    private FirebaseDatabase database;
+    private DatabaseReference messagesDatabaseReference;
+    private ChildEventListener messagesChildEventListener;
+    private DatabaseReference usersDatabaseReference;
+    private ChildEventListener usersChildEventListener;
+
+    private FirebaseStorage storage;
+    private StorageReference chatImagesStorageReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
 
-        database=FirebaseDatabase.getInstance();
-        databaseReference= database.getReference().child("messages");
-        usersDattabaseRef= database.getReference().child("users");
+        database = FirebaseDatabase.getInstance();
+        storage = FirebaseStorage.getInstance();
+
+        messagesDatabaseReference = database.getReference().child("messages");
+        usersDatabaseReference = database.getReference().child("users");
+        chatImagesStorageReference = storage.getReference().child("chat_images");
         Intent intent =getIntent();
         if(intent!=null)
         {
@@ -79,8 +83,7 @@ public class ChatActivity extends AppCompatActivity {
         List<Message> listMessages=new ArrayList<>();
         adapter=new MessageAdapter(this, R.layout.message_item, listMessages);
         messages.setAdapter(adapter);
-        fbStorage=FirebaseStorage.getInstance();
-        chatImageStorageReference=fbStorage.getReference().child("ChatImages");
+
         progressBar.setVisibility(ProgressBar.INVISIBLE);
 
 
@@ -115,7 +118,7 @@ public class ChatActivity extends AppCompatActivity {
                 message.setName(username);
                 message.setText(messageEditText.getText().toString());
                 message.setImageUrl(null);
-                databaseReference.push().setValue(message);
+                messagesDatabaseReference.push().setValue(message);
                 messageEditText.setText("");
 
             }
@@ -160,8 +163,8 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         };
-        usersDattabaseRef.addChildEventListener(usersChildEventListener);
-        messsagesChildEventListener= new ChildEventListener() {
+        usersDatabaseReference.addChildEventListener(usersChildEventListener);
+        messagesChildEventListener= new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Message message=snapshot.getValue(Message.class);
@@ -188,7 +191,7 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         };
-        databaseReference.addChildEventListener(messsagesChildEventListener);
+        messagesDatabaseReference.addChildEventListener(messagesChildEventListener);
 
     }
 
@@ -218,7 +221,7 @@ public class ChatActivity extends AppCompatActivity {
         if(requestCode==RC_IMAGE_PICKER && requestCode==RESULT_OK)
         {
             Uri selectImageUri=data.getData();
-            StorageReference imgReference=chatImageStorageReference.child(selectImageUri.getLastPathSegment());
+            StorageReference imgReference=chatImagesStorageReference.child(selectImageUri.getLastPathSegment());
             UploadTask uploadTask=imgReference.putFile(selectImageUri);
             Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
@@ -239,7 +242,7 @@ public class ChatActivity extends AppCompatActivity {
                         Message message=new Message();
                         message.setImageUrl(downloadUri.toString());
                         message.setName(username);
-                        databaseReference.push().setValue(message);
+                        messagesDatabaseReference.push().setValue(message);
                     } else {
                         // Handle failures
                         // ...
