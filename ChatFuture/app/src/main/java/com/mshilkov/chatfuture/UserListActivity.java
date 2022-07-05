@@ -41,13 +41,13 @@ public class UserListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
-        /*Intent intent = getIntent();
+        Intent intent = getIntent();
         if (intent != null) {
             userName = intent.getStringExtra(userName);
         }
 
         auth = FirebaseAuth.getInstance();
-*/
+
         userArrayList = new ArrayList<>();
         attachUserDatabaseReferenceListener();
         buildRecyclerView();
@@ -60,10 +60,11 @@ public class UserListActivity extends AppCompatActivity {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     User user = dataSnapshot.getValue(User.class);
-
-                  user.setAvatarMockUpResource(R.drawable.user_image);
-                  userArrayList.add(user);
-                  userAdapter.notifyDataSetChanged();
+                    if (!user.getId().equals(auth.getCurrentUser().getUid()) ) {
+                        user.setAvatarMockUpResource(R.drawable.user_image);
+                        userArrayList.add(user);
+                        userAdapter.notifyDataSetChanged();
+                    }
 
                 }
 
@@ -103,15 +104,15 @@ public class UserListActivity extends AppCompatActivity {
         userRecyclerView.setLayoutManager(userLayoutManager);
         userRecyclerView.setAdapter(userAdapter);
 
-       /* userAdapter.setOnUserClickListener(new UserAdapter.OnUserClickListener() {
+        userAdapter.setOnUserClickListener(new UserAdapter.OnUserClickListener() {
             @Override
             public void onUserClick(int position) {
                 goToChat(position);
             }
-        });*/
+        });
     }
 
-   /* private void goToChat(int position) {
+   private void goToChat(int position) {
         Intent intent = new Intent(UserListActivity.this,
                 ChatActivity.class);
         intent.putExtra("recipientUserId",
@@ -139,5 +140,5 @@ public class UserListActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }*/
+    }
 }
