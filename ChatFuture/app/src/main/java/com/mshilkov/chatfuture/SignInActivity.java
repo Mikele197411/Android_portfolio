@@ -85,7 +85,9 @@ public class SignInActivity extends AppCompatActivity {
                                     FirebaseUser user = auth.getCurrentUser();
                                     Intent intent = new Intent(SignInActivity.this,
                                             UserListActivity.class);
-                                    intent.putExtra("userName", nameEditText.getText().toString().trim());
+
+                                    String username=nameEditText.getText().toString().trim();
+                                    intent.putExtra("userName", username);
                                     startActivity(intent);
                                     //updateUI(user);
                                 } else {
@@ -95,6 +97,7 @@ public class SignInActivity extends AppCompatActivity {
                                             Toast.LENGTH_SHORT).show();
                                     //updateUI(null);
                                 }
+
 
                                 // ...
                             }
@@ -125,7 +128,8 @@ public class SignInActivity extends AppCompatActivity {
                                     //updateUI(user);
                                     Intent intent = new Intent(SignInActivity.this,
                                             UserListActivity.class);
-                                    intent.putExtra("userName", nameEditText.getText().toString().trim());
+                                    String username=nameEditText.getText().toString().trim();
+                                    intent.putExtra("userName", username);
                                     startActivity(intent);
                                 } else {
                                     // If sign in fails, display a message to the user.

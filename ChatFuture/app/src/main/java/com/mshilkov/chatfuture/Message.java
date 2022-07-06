@@ -2,17 +2,24 @@ package com.mshilkov.chatfuture;
 
 public class Message {
 
-    String text;
-    String name;
-    String imageUrl;
+    private String text;
+    private String name;
+    private String sender;
+    private String recipient;
+    private String imageUrl;
+    private boolean isMine;
 
-    public Message(String text, String name, String imageUrl) {
+    public Message() {
+    }
+
+    public Message(String text, String name, String sender,
+                          String recipient, String imageUrl, boolean isMine) {
         this.text = text;
         this.name = name;
+        this.sender = sender;
+        this.recipient = recipient;
         this.imageUrl = imageUrl;
-    }
-    public Message() {
-
+        this.isMine = isMine;
     }
 
     public String getText() {
@@ -31,11 +38,35 @@ public class Message {
         this.name = name;
     }
 
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    public String getRecipient() {
+        return recipient;
+    }
+
+    public void setRecipient(String recipient) {
+        this.recipient = recipient;
+    }
+
     public String getImageUrl() {
         return imageUrl;
     }
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public boolean isMine() {
+        return isMine;
+    }
+
+    public void setMine(boolean mine) {
+        isMine = mine;
     }
 }

@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
-
+    private FirebaseAuth auth;
     private ListView messages;
     private MessageAdapter adapter;
     private ProgressBar progressBar;
@@ -52,6 +52,10 @@ public class ChatActivity extends AppCompatActivity {
     private DatabaseReference usersDatabaseReference;
     private ChildEventListener usersChildEventListener;
 
+    private String userName;
+    private String recipientUserId;
+    private String recipientUserName;
+
     private FirebaseStorage storage;
     private StorageReference chatImagesStorageReference;
     @Override
@@ -59,20 +63,18 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-
+        auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
 
         messagesDatabaseReference = database.getReference().child("messages");
         usersDatabaseReference = database.getReference().child("users");
         chatImagesStorageReference = storage.getReference().child("chat_images");
-        Intent intent =getIntent();
-        if(intent!=null)
-        {
-            username=intent.getStringExtra("UserName");
-        }
-        else {
-            username = "Default User";
+        Intent intent = getIntent();
+        if (intent != null) {
+            userName = intent.getStringExtra("userName");
+            recipientUserId = intent.getStringExtra("recipientUserId");
+            recipientUserName = intent.getStringExtra("recipientUserName");
         }
         messages=findViewById(R.id.messagesListView);
         progressBar=findViewById(R.id.progressBar);
@@ -115,10 +117,14 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Message message=new Message();
-                message.setName(username);
                 message.setText(messageEditText.getText().toString());
+                message.setName(userName);
+                message.setSender(auth.getCurrentUser().getUid());
+                message.setRecipient(recipientUserId);
                 message.setImageUrl(null);
+
                 messagesDatabaseReference.push().setValue(message);
+
                 messageEditText.setText("");
 
             }
@@ -167,8 +173,19 @@ public class ChatActivity extends AppCompatActivity {
         messagesChildEventListener= new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Message message=snapshot.getValue(Message.class);
-                adapter.add(message);
+                Message message =
+                        snapshot.getValue(Message.class);
+
+                if (message.getSender().equals(auth.getCurrentUser().getUid())
+                        && message.getRecipient().equals(recipientUserId)) {
+                    message.setMine(true);
+                    message.setName(userName);
+                    adapter.add(message);
+                } else if (message.getRecipient().equals(auth.getCurrentUser().getUid())
+                        && message.getSender().equals(recipientUserId)) {
+                    message.setMine(false);
+                    adapter.add(message);
+                }
             }
 
             @Override
@@ -237,11 +254,12 @@ public class ChatActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
-
                         Uri downloadUri = task.getResult();
-                        Message message=new Message();
+                        Message message = new Message();
                         message.setImageUrl(downloadUri.toString());
-                        message.setName(username);
+                        message.setName(userName);
+                        message.setSender(auth.getCurrentUser().getUid());
+                        message.setRecipient(recipientUserId);
                         messagesDatabaseReference.push().setValue(message);
                     } else {
                         // Handle failures

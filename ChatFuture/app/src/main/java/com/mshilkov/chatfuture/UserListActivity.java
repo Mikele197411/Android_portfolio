@@ -43,7 +43,7 @@ public class UserListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_list);
         Intent intent = getIntent();
         if (intent != null) {
-            userName = intent.getStringExtra(userName);
+            userName = intent.getStringExtra("userName");
         }
 
         auth = FirebaseAuth.getInstance();
