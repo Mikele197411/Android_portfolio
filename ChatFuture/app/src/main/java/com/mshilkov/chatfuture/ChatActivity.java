@@ -76,6 +76,7 @@ public class ChatActivity extends AppCompatActivity {
             recipientUserId = intent.getStringExtra("recipientUserId");
             recipientUserName = intent.getStringExtra("recipientUserName");
         }
+        setTitle("Chat with " + recipientUserName);
         messages=findViewById(R.id.messagesListView);
         progressBar=findViewById(R.id.progressBar);
         sendImageButton=findViewById(R.id.sendPhotoButton);
