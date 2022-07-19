@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Repos/Android_portfolio/TaxiApp/app/src/main/res/layout/activity_choose_mode.xml" value="0.18541666666666667" />
+        <entry key="..\:/Repos/Android_portfolio/TaxiApp/app/src/main/res/layout/activity_driver_sign_in.xml" value="0.35190217391304346" />
+        <entry key="..\:/Repos/Android_portfolio/TaxiApp/app/src/main/res/layout/activity_passenger_sign_in.xml" value="0.35190217391304346" />
         <entry key="..\:/Repos/Android_portfolio/TaxiApp/app/src/main/res/layout/activity_splash_sceen.xml" value="0.18541666666666667" />
       </map>
     </option>
