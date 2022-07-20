@@ -192,7 +192,7 @@ public class PassengerSignInActivity extends AppCompatActivity {
                                                 "Authentication failed.",
                                                 Toast.LENGTH_SHORT).show();
                                         //updateUI(null);
-                                        
+
 
                                     }
 
