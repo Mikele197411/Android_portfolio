@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "696446839641",
-    "project_id": "taxapp-7e629",
-    "storage_bucket": "taxapp-7e629.appspot.com"
+    "project_number": "234842784810",
+    "firebase_url": "https://taxiapp-357106-default-rtdb.firebaseio.com",
+    "project_id": "taxiapp-357106",
+    "storage_bucket": "taxiapp-357106.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:696446839641:android:94fdd4e5df65d7863eba48",
+        "mobilesdk_app_id": "1:234842784810:android:fabea8084dcc1fcde8af53",
         "android_client_info": {
           "package_name": "com.mshilkov.taxiapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "696446839641-94v10o1ht5sqdfct2l0i2qirvhdcgani.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.mshilkov.taxiapp",
-            "certificate_hash": "5a0f1157dafc322018228f7330c83704434c91ca"
-          }
-        },
-        {
-          "client_id": "696446839641-4jcnji74m6irt8hn079isdjg2v60nhmj.apps.googleusercontent.com",
+          "client_id": "234842784810-johsb4mh40kv9a2e8usavm8p0bnupile.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBVhK1ZHQScROwY3yw1S45SnZyzRnqxEPE"
+          "current_key": "AIzaSyAJFF6EZBivi-6c0jsnlCpBn88hASOkVqk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "696446839641-4jcnji74m6irt8hn079isdjg2v60nhmj.apps.googleusercontent.com",
+              "client_id": "234842784810-johsb4mh40kv9a2e8usavm8p0bnupile.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

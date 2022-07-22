@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -20,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class DriverSignInActivity extends AppCompatActivity {
     private static final String TAG = "DriverSignInActivity";
-
+    GoogleMap gMap;
     private TextInputLayout textInputEmail;
     private TextInputLayout textInputName;
     private TextInputLayout textInputPassword;
