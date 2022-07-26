@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:234842784810:android:fabea8084dcc1fcde8af53",
+        "mobilesdk_app_id": "1:234842784810:android:4fe8fe30e51cee49e8af53",
         "android_client_info": {
           "package_name": "com.mshilkov.taxiapp"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "234842784810-gg3t2iik46gut2n1fs0r9oma3sa5ubgr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mshilkov.taxiapp",
+            "certificate_hash": "5a0f1157dafc322018228f7330c83704434c91ca"
+          }
+        },
         {
           "client_id": "234842784810-johsb4mh40kv9a2e8usavm8p0bnupile.apps.googleusercontent.com",
           "client_type": 3
